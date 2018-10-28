@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class BitmapFont {
 	private int rows, cols;
 	private List<Glyph> glyphs;
+	private int selected;
 	
 	public BitmapFont(int rows, int cols) {
 		this.rows = rows;
@@ -20,10 +21,19 @@ public class BitmapFont {
 		for (int i = 0; i < 256; i++) {
 			glyphs.add(new Glyph(rows, cols));
 		}
+		this.selected = 0;
 	}
 	
 	public Glyph getGlyph(int n) {
 		return glyphs.get(n);
+	}
+	
+	public int getSelected() {
+		return selected;
+	}
+	
+	public void setSelected(int selected) {
+		this.selected = selected;
 	}
 	
 	public static BitmapFont read(Reader rdr) throws IOException {
