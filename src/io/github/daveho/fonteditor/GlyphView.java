@@ -19,7 +19,7 @@ public class GlyphView extends JPanel {
 
 	public static final int SCALE = 24;
 	
-	private Glyph model;
+	private BitmapFont model;
 	
 	public GlyphView() {
 		setPreferredSize(new Dimension(BitmapFontView.FONT_W*SCALE, BitmapFontView.FONT_H*SCALE));
@@ -32,7 +32,7 @@ public class GlyphView extends JPanel {
 		});
 	}
 	
-	public void setModel(Glyph model) {
+	public void setModel(BitmapFont model) {
 		this.model = model;
 	}
 
@@ -40,11 +40,12 @@ public class GlyphView extends JPanel {
 		if (model == null) {
 			return;
 		}
+		Glyph glyph = model.getGlyph(model.getSelected());
 		int c = e.getX() / SCALE;
 		int r = e.getY() / SCALE;
 		if (c >= 0 && c < BitmapFontView.FONT_W && r >= 0 && r < BitmapFontView.FONT_H) {
 			int bitidx = BitmapFontView.FONT_W - c - 1;
-			model.getData().get(r).flip(bitidx);
+			glyph.getData().get(r).flip(bitidx);
 			repaint();
 		}
 	}
@@ -55,11 +56,12 @@ public class GlyphView extends JPanel {
 		if (model == null) {
 			return;
 		}
+		Glyph glyph = model.getGlyph(model.getSelected());
 		g.setColor(Color.BLACK);
 		for (int r = 0; r < BitmapFontView.FONT_H; r++) {
 			for (int c = 0; c < BitmapFontView.FONT_W; c++) {
 				int bitidx = BitmapFontView.FONT_W - c - 1;
-				if (model.getData().get(r).get(bitidx)) {
+				if (glyph.getData().get(r).get(bitidx)) {
 					int x = c * SCALE;
 					int y = r * SCALE;
 					g.fillRect(x, y, SCALE, SCALE);
@@ -82,7 +84,7 @@ public class GlyphView extends JPanel {
 			@Override
 			public void run() {
 				GlyphView view = new GlyphView();
-				view.setModel(font.getGlyph(92));
+				view.setModel(font);
 				JFrame frame = new JFrame("Glyph view test");
 				frame.setContentPane(view);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
