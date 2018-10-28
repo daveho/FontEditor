@@ -8,13 +8,15 @@ import java.awt.event.MouseEvent;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class BitmapFontView extends JPanel {
+public class BitmapFontView extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
 
 	public static final int FONT_W = 8;
@@ -35,17 +37,23 @@ public class BitmapFontView extends JPanel {
 		});
 	}
 	
+	@Override
+	public void update(Observable o, Object arg) {
+		repaint();
+	}
+	
 	protected void handleMouseClicked(MouseEvent e) {
 		int c = e.getX() / (FONT_W*SCALE);
 		int r = e.getY() / (FONT_H*SCALE);
 		if (c >= 0 && c < 16 && r >= 0 && r < 16) {
 			model.setSelected(r*16 + c);
-			repaint();
+			//repaint();
 		}
 	}
 
 	public void setModel(BitmapFont model) {
 		this.model = model;
+		this.model.addObserver(this);
 	}
 	
 	@Override

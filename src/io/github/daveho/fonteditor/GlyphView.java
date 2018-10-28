@@ -8,13 +8,15 @@ import java.awt.event.MouseEvent;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class GlyphView extends JPanel {
+public class GlyphView extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
 
 	public static final int SCALE = 24;
@@ -32,8 +34,14 @@ public class GlyphView extends JPanel {
 		});
 	}
 	
+	@Override
+	public void update(Observable o, Object arg) {
+		repaint();
+	}
+	
 	public void setModel(BitmapFont model) {
 		this.model = model;
+		this.model.addObserver(this);
 	}
 
 	protected void handleMouseClicked(MouseEvent e) {
@@ -46,7 +54,8 @@ public class GlyphView extends JPanel {
 		if (c >= 0 && c < BitmapFontView.FONT_W && r >= 0 && r < BitmapFontView.FONT_H) {
 			int bitidx = BitmapFontView.FONT_W - c - 1;
 			glyph.getData().get(r).flip(bitidx);
-			repaint();
+			//repaint();
+			model.notifyObservers();
 		}
 	}
 	

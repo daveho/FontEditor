@@ -7,9 +7,10 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+import java.util.Observable;
 import java.util.Scanner;
 
-public class BitmapFont {
+public class BitmapFont extends Observable {
 	private int rows, cols;
 	private List<Glyph> glyphs;
 	private int selected;
@@ -34,6 +35,7 @@ public class BitmapFont {
 	
 	public void setSelected(int selected) {
 		this.selected = selected;
+		notifyObservers();
 	}
 	
 	public static BitmapFont read(Reader rdr) throws IOException {
