@@ -3,9 +3,11 @@ package io.github.daveho.fonteditor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -102,6 +104,25 @@ public class BitmapFont extends MyObservable {
 		}
 		
 		return font;
+	}
+
+	// Write binary font data, i.e., to write into a font ROM.
+	// Only makes sense if the font width is 8.
+	public static void writeBinary(File outputFile, BitmapFont font) throws IOException {
+		if (font.getWidth() != 8)
+			throw new IOException("Writing binary font data only supported when font width is 8");
+		try (OutputStream os = new FileOutputStream(outputFile)) {
+			for (int i = 0; i < 256; ++i) {
+				Glyph g = font.getGlyph(i);
+				for (int r = 0; r < font.getHeight(); ++r) {
+					int val = 0;
+					for (int j = 0; j < 8; ++j)
+						if (g.get(r, j))
+							val |= (1 << j);
+					os.write(val);
+				}
+			}
+		}
 	}
 
 	private static void convertRowData(String line, int cols, BitSet bitSet) {

@@ -6,14 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.function.Function;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 public class FontEditorApp extends JPanel implements MyObserver {
 	private static final long serialVersionUID = 1L;
@@ -76,9 +73,9 @@ public class FontEditorApp extends JPanel implements MyObserver {
 				(int) glyphViewDim.getHeight());
 		
 		Dimension buttonPanelDim = buttonPanel.getPreferredSize();
-		buttonPanel.setBounds(BORDER, BORDER + topPartHeight, (int) buttonPanelDim.getWidth(), (int) buttonPanelDim.getHeight());
+		buttonPanel.setBounds(BORDER, BORDER + topPartHeight, topPartWidth, (int) buttonPanelDim.getHeight());
 
-		setPreferredSize(new Dimension(topPartWidth, topPartHeight + (int) buttonPanelDim.getHeight()));
+		setPreferredSize(new Dimension(topPartWidth, topPartHeight + (int) (buttonPanelDim.getHeight() + BORDER)));
 	}
 
 	@Override
@@ -92,8 +89,17 @@ public class FontEditorApp extends JPanel implements MyObserver {
 		JFileChooser fc = new JFileChooser();
 		if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			File inputFile = fc.getSelectedFile();
+			
 			try {
-				BitmapFont font = BitmapFont.readBinary(inputFile, 8, 16);
+				// Attempt to infer the font height from the file size
+				long size = inputFile.length();
+				if (size == 0)
+					throw new IOException("Empty file?");
+				if ((size % 256) != 0)
+					throw new IOException("Chosen file doesn't seem to be binary font data");
+				int fontHeight = (int) (size / 256);
+				
+				BitmapFont font = BitmapFont.readBinary(inputFile, 8, fontHeight);
 				this.setModel(font);
 				font.notifyObservers();
 			} catch (IOException e) {
@@ -104,6 +110,14 @@ public class FontEditorApp extends JPanel implements MyObserver {
 	}
 	
 	private void onSave() {
-		System.out.println("TODO: dialog to save font");
+		JFileChooser fc = new JFileChooser();
+		if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+			File outputFile = fc.getSelectedFile();
+			try {
+				BitmapFont.writeBinary(outputFile, model);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(this, "Error saving font file: " + e.getMessage());
+			}
+		}
 	}
 }

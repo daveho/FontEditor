@@ -18,7 +18,7 @@ public class BitmapFontView extends JPanel implements MyObserver {
 
 //	public static final int model.getWidth() = 8;
 //	public static final int model.getHeight() = 16;
-	public static final int SCALE = 4;
+	public static final int SCALE = 2;
 	
 	private BitmapFont model;
 	
