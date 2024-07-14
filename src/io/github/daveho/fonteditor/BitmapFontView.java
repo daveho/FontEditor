@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -100,10 +101,15 @@ public class BitmapFontView extends JPanel implements MyObserver {
 		System.out.print("Enter font filename: ");
 		String fileName = keyboard.nextLine();
 		BitmapFont font;
-		try (Reader in = new FileReader(fileName)) {
-			font = BitmapFont.read(in);
-			System.out.println("Read successfully?");
-		}
+//		try (Reader in = new FileReader(fileName)) {
+//			font = BitmapFont.read(in);
+//			System.out.println("Read successfully?");
+//		}
+		
+		// Try to read binary 8x16 VGA font data
+		File inputFile = new File(fileName);
+		font = BitmapFont.readBinary(inputFile, 8, 16);
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
