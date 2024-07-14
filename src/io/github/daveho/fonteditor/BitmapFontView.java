@@ -8,15 +8,13 @@ import java.awt.event.MouseEvent;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class BitmapFontView extends JPanel implements Observer {
+public class BitmapFontView extends JPanel implements MyObserver {
 	private static final long serialVersionUID = 1L;
 
 	public static final int FONT_W = 8;
@@ -38,7 +36,7 @@ public class BitmapFontView extends JPanel implements Observer {
 	}
 	
 	@Override
-	public void update(Observable o, Object arg) {
+	public void update(MyObservable o, Object arg) {
 		repaint();
 	}
 	

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Scanner;
 
-public class BitmapFont extends Observable {
+public class BitmapFont extends MyObservable {
 	private int rows, cols;
 	private List<Glyph> glyphs;
 	private int selected;

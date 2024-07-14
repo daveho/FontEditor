@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class GlyphView extends JPanel implements Observer {
+public class GlyphView extends JPanel implements MyObserver {
 	private static final long serialVersionUID = 1L;
 
 	public static final int SCALE = 24;
@@ -35,7 +35,7 @@ public class GlyphView extends JPanel implements Observer {
 	}
 	
 	@Override
-	public void update(Observable o, Object arg) {
+	public void update(MyObservable o, Object arg) {
 		repaint();
 	}
 	
