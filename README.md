@@ -14,10 +14,6 @@ YMMV.
 
 The `Main` class has a main method which runs the application.
 
-There is no error handling.
-
-See `font2.txt` for an example data file.
-
 Screenshot:
 
 ![Screenshot](screenshot2.png)
