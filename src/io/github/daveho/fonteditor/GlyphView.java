@@ -46,7 +46,6 @@ public class GlyphView extends JPanel implements MyObserver {
 		if (model == null) {
 			return;
 		}
-		System.out.println("Scroble!");
 		Glyph glyph = model.getGlyph(model.getSelected());
 		int c = e.getX() / SCALE;
 		int r = e.getY() / SCALE;
