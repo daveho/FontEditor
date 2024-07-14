@@ -25,6 +25,14 @@ public class BitmapFont extends MyObservable {
 		this.selected = 0;
 	}
 	
+	public int getWidth() {
+		return cols;
+	}
+	
+	public int getHeight() {
+		return rows;
+	}
+	
 	public Glyph getGlyph(int n) {
 		return glyphs.get(n);
 	}

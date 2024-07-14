@@ -24,7 +24,6 @@ public class GlyphView extends JPanel implements MyObserver {
 	private BitmapFont model;
 	
 	public GlyphView() {
-		setPreferredSize(new Dimension(BitmapFontView.FONT_W*SCALE, BitmapFontView.FONT_H*SCALE));
 		setBackground(Color.LIGHT_GRAY);
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -42,6 +41,7 @@ public class GlyphView extends JPanel implements MyObserver {
 	public void setModel(BitmapFont model) {
 		this.model = model;
 		this.model.addObserver(this);
+		setPreferredSize(new Dimension(model.getWidth()*SCALE, model.getHeight()*SCALE));
 	}
 
 	protected void handleMouseClicked(MouseEvent e) {
@@ -51,8 +51,8 @@ public class GlyphView extends JPanel implements MyObserver {
 		Glyph glyph = model.getGlyph(model.getSelected());
 		int c = e.getX() / SCALE;
 		int r = e.getY() / SCALE;
-		if (c >= 0 && c < BitmapFontView.FONT_W && r >= 0 && r < BitmapFontView.FONT_H) {
-			int bitidx = BitmapFontView.FONT_W - c - 1;
+		if (c >= 0 && c < model.getWidth() && r >= 0 && r < model.getHeight()) {
+			int bitidx = model.getWidth() - c - 1;
 			glyph.getData().get(r).flip(bitidx);
 			//repaint();
 			model.notifyObservers();
@@ -67,9 +67,9 @@ public class GlyphView extends JPanel implements MyObserver {
 		}
 		Glyph glyph = model.getGlyph(model.getSelected());
 		g.setColor(Color.BLACK);
-		for (int r = 0; r < BitmapFontView.FONT_H; r++) {
-			for (int c = 0; c < BitmapFontView.FONT_W; c++) {
-				int bitidx = BitmapFontView.FONT_W - c - 1;
+		for (int r = 0; r < model.getHeight(); r++) {
+			for (int c = 0; c < model.getWidth(); c++) {
+				int bitidx = model.getWidth() - c - 1;
 				if (glyph.getData().get(r).get(bitidx)) {
 					int x = c * SCALE;
 					int y = r * SCALE;

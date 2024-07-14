@@ -17,14 +17,13 @@ import javax.swing.SwingUtilities;
 public class BitmapFontView extends JPanel implements MyObserver {
 	private static final long serialVersionUID = 1L;
 
-	public static final int FONT_W = 8;
-	public static final int FONT_H = 8;
+//	public static final int model.getWidth() = 8;
+//	public static final int model.getHeight() = 16;
 	public static final int SCALE = 4;
 	
 	private BitmapFont model;
 	
 	public BitmapFontView() {
-		setPreferredSize(new Dimension(16 * FONT_W * SCALE, 16 * FONT_H * SCALE));
 		setBackground(Color.LIGHT_GRAY);
 		
 		addMouseListener(new MouseAdapter() {
@@ -41,8 +40,8 @@ public class BitmapFontView extends JPanel implements MyObserver {
 	}
 	
 	protected void handleMouseClicked(MouseEvent e) {
-		int c = e.getX() / (FONT_W*SCALE);
-		int r = e.getY() / (FONT_H*SCALE);
+		int c = e.getX() / (model.getWidth()*SCALE);
+		int r = e.getY() / (model.getHeight()*SCALE);
 		if (c >= 0 && c < 16 && r >= 0 && r < 16) {
 			model.setSelected(r*16 + c);
 			//repaint();
@@ -52,6 +51,7 @@ public class BitmapFontView extends JPanel implements MyObserver {
 	public void setModel(BitmapFont model) {
 		this.model = model;
 		this.model.addObserver(this);
+		setPreferredSize(new Dimension(16 * model.getWidth() * SCALE, 16 * model.getHeight() * SCALE));
 	}
 	
 	@Override
@@ -75,19 +75,19 @@ public class BitmapFontView extends JPanel implements MyObserver {
 		int selCol = sel%16;
 		Color highlight = new Color(128, 255, 128, 80);
 		g.setColor(highlight);
-		int x = selCol * FONT_W * SCALE;
-		int y = selRow * FONT_H * SCALE;
-		g.fillRect(x, y, FONT_W * SCALE, FONT_H * SCALE);
+		int x = selCol * model.getWidth() * SCALE;
+		int y = selRow * model.getHeight() * SCALE;
+		g.fillRect(x, y, model.getWidth() * SCALE, model.getHeight() * SCALE);
 	}
 
 	private void paintGlyph(Glyph glyph, int r, int c, Graphics g) {
 		g.setColor(Color.BLACK);
-		for (int i = 0; i < FONT_H; i++) {
-			for (int j = 0; j < FONT_W; j++) {
-				int bitidx = FONT_W - j - 1;
+		for (int i = 0; i < model.getHeight(); i++) {
+			for (int j = 0; j < model.getWidth(); j++) {
+				int bitidx = model.getWidth() - j - 1;
 				if (glyph.getData().get(i).get(bitidx)) {
-					int x = c * FONT_W * SCALE;
-					int y = r * FONT_H * SCALE;
+					int x = c * model.getWidth() * SCALE;
+					int y = r * model.getHeight() * SCALE;
 					g.fillRect(x + j*SCALE, y + i*SCALE, SCALE, SCALE);
 				}
 			}
