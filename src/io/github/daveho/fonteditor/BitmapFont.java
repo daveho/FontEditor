@@ -10,7 +10,6 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-import java.util.Observable;
 import java.util.Scanner;
 
 public class BitmapFont extends MyObservable {

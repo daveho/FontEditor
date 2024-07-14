@@ -8,8 +8,6 @@ import java.awt.event.MouseEvent;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
