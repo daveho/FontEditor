@@ -11,7 +11,12 @@ public class MyObservable {
 	}
 	
 	public void notifyObservers() {
-		
+		notifyObservers(null);
+	}
+	
+	public void notifyObservers(Object hint) {
+		for (MyObserver observer : observerList)
+			observer.update(this, hint);
 	}
 	
 	public void addObserver(MyObserver observer) {
